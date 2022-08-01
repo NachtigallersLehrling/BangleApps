@@ -138,36 +138,39 @@ function drawBg() {
 }
 
 function handlePressure(p) {
-  if (p===undefined) {
-    return;
-  }
-  print(p.pressure , p.temperature);
-
-  var temp = locale.temp(p.temperature).match(/^(\D*\d*)(.*)$/);
-  var press = Math.round(p.pressure);
-
-  var tempWidth;
+  //print("Start Handler");
   const mid=139;
   const y = 120;
-  if (temp[1][0]=="-") {
-    // do not account for - when aligning
-    const minusWidth=3*4;
-    tempWidth = minusWidth+(temp[1].length-1)*4*3;
+  if (p!==undefined) {
+    //print(p.pressure , p.temperature);
+
+    var temp = locale.temp(p.temperature).match(/^(\D*\d*)(.*)$/);
+    var press = Math.round(p.pressure);
+
+    var tempWidth = temp[1].length*4*3;
+    const x = mid + 6;
+    g.clearRect(x,y,176,114+4*5);
+    g.setFont("4x5NumPretty",3);
+    g.drawString(temp[1],x,y);
+    square(x+tempWidth-1,y,6,2);
+    vertLine(mid, y,15);
+
+    g.clearRect(mid-25,145,176,176);
+    g.setFont("4x5NumPretty",3);
+    g.drawString(press,mid-22,145);
+    //print("Done");
   } else {
-    tempWidth = temp[1].length*4*3;
+      const x = mid;
+      g.clearRect(x,114, 176, y+15);
+      horiLine(x+7, y+6, 10);
+      vertLine(mid, y,15);
+      g.clearRect(mid-25,145,176,176);
+      g.setFont("4x5NumPretty",3);
+      horiLine(mid-5,y+30, 10);
+      //print("Undefined -> Done");
   }
-  const x = mid + 6;
-  g.clearRect(x,y,176,114+4*5);
-  g.setFont("4x5NumPretty",3);
-  g.drawString(temp[1],x,y);
-  square(x+tempWidth-1,y,6,2);
-  vertLine(mid, y,15);
-
-  g.clearRect(mid-25,145,176,176);
-  g.setFont("4x5NumPretty",3);
-  g.drawString(press,mid-22,145);
-
 }
+
 
 function square(x,y,w,e) {
   g.setColor("#000").fillRect(x,y,x+w,y+w);
@@ -197,7 +200,7 @@ function draw() {
   date = day+"."+mon+".";
 
   try {
-  Bangle.getPressure().then(handlePressure);
+    ga Bangle.getPressure().then(handlePressure);
   } catch(e) {
     print(e.message);
     print("barometer not supported, showing demo values");
