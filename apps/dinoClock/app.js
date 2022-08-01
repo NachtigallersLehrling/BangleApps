@@ -200,7 +200,7 @@ function draw() {
   date = day+"."+mon+".";
 
   try {
-    ga Bangle.getPressure().then(handlePressure);
+    Bangle.getPressure().then(handlePressure);
   } catch(e) {
     print(e.message);
     print("barometer not supported, showing demo values");
