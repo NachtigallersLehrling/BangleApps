@@ -290,18 +290,13 @@ ${trackData.Latitude ? `
          var track = trackList[trackid];
          var trackData = trackLineToObject(track.info.headers, track.info.l);
 
-         //var trackdate = trackData.Time.toLocaleDateString(undefined, {year: 'numeric', month: '2-digit', day: '2-digit' });
-
          var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-         //var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 
          var datestring = (new Date(trackData.Time - tzoffset)).toISOString();  // 2022-08-01T21:33:05.259Z
          var trackdate = datestring.slice(0,13) + "-" + datestring.slice(14, 16);  // 2022-08-01T21-33
-         console.log("date", trackdate);
 
          //var title = `Bangle.js Track ${trackid}`;
          var title = `${trackdate}_Track${trackid}`;
-         console.log("title", title);
 
          if (task=="downloadkml") {
            downloadTrack(filename, track => saveKML(track, title));
